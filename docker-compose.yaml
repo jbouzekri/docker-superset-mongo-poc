@@ -1,0 +1,99 @@
+version: '3.1'
+
+services:
+    poc_ssm_mongo:
+        image: mongo:5.0.1
+        container_name: poc_ssm_mongo
+        restart: always
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: root
+
+    poc_ssm_mongo_express:
+        image: mongo-express:1.0.0-alpha.4
+        container_name: poc_ssm_mongo_express
+        restart: always
+        ports:
+            - 8081:8081
+        environment:
+            ME_CONFIG_MONGODB_SERVER: poc_ssm_mongo
+            ME_CONFIG_MONGODB_ADMINUSERNAME: root
+            ME_CONFIG_MONGODB_ADMINPASSWORD: root
+        depends_on:
+            - poc_ssm_mongo
+
+    poc_ssm_mongo_bi:
+        image: poc-ssm-mongo-bi
+        container_name: poc_ssm_mongo_bi
+        build:
+            context: ./mongo-bi
+        #entrypoint: ['/bin/sh', '-c', 'sleep 100000']
+        ports:
+            - 3307:3307
+        environment:
+            CONFIG_MONGO_BI_MONGO_USERNAME: root
+            CONFIG_MONGO_BI_MONGO_PASSWORD: root
+            CONFIG_MONGO_BI_AUTH: 1
+            CONFIG_MONGO_BI_MONGO_URI: mongodb://poc_ssm_mongo:27017
+            CONFIG_MONGO_BI_VERY_VERBOSE: 1
+            CONFIG_MONGO_BI_SCHEMA_REFRESH_INTERVAL_SECS: 60
+            CONFIG_MONGO_BI_SSL_MODE: allowSSL
+            CONFIG_MONGO_BI_SSL_PEM_KEY_FILE: /ssl/mongobi.pem
+        volumes:
+            - ./mongo-bi/ssl:/ssl
+        depends_on:
+            - poc_ssm_mongo
+            - poc_ssm_mongo_express # added to wait longer and be sure mongo is started
+
+    poc_ssm_mongo_data:
+        image: poc-ssm-mongo-data
+        container_name: poc_ssm_mongo_data
+        build:
+            context: ./mongo-data
+        restart: on-failure
+        environment:
+            MONGO_DB_URI: mongodb://root:root@poc_ssm_mongo:27017/samples?authSource=admin
+        depends_on:
+            - poc_ssm_mongo
+            - poc_ssm_mongo_express # added to wait longer and be sure mongo is started
+
+    poc_ssm_mysql_client:
+        image: poc-ssm-mysql-client
+        container_name: poc_ssm_mysql_client
+        build:
+            context: ./mysql-client
+        entrypoint: ['/bin/sh', '-c', 'sleep 100000']
+        depends_on:
+            - poc_ssm_mongo_data
+
+    poc_ssm_sqlalchemy:
+        image: poc-ssm-sqlalchemy
+        container_name: poc_ssm_sqlalchemy
+        build:
+            context: ./sqlalchemy
+        environment:
+            MONGO_BI_HOST: poc_ssm_mongo_bi
+            MONGO_BI_USERNAME: root?source=admin
+            MONGO_BI_PASSWORD: root
+            MONGO_BI_PORT: 3307
+            MONGO_BI_DATABASE: samples
+        entrypoint: ['/bin/sh', '-c', 'sleep 100000']
+        volumes:
+            - ./sqlalchemy/script:/sqlalchemy
+        depends_on:
+            - poc_ssm_mongo_data
+
+    poc_ssm_superset:
+        image: poc-ssm-superset
+        container_name: poc_ssm_superset
+        build:
+            context: ./superset
+        environment:
+            ENABLE_DEV_MODE: 1
+            ADMIN_USERNAME: admin
+            ADMIN_EMAIL: admin@dev.local
+            ADMIN_PASSWORD: admin
+        ports:
+            - 8088:8088
+        depends_on:
+            - poc_ssm_mongo_data
