@@ -121,7 +121,11 @@ $ docker-compose exec poc_ssm_sqlalchemy bash
 
 ### 3. Superset
 
-This example has a few screenshots and the page is a bit long so it has been moved to a [dedicated documentation](./SUPERSET.md)
+* [01 - Setup the database and datasets](./doc/01_setup_database_datasets.md)
+* [02 - Create a simple bar chart](./doc/02_simple_bar_chart.md)
+* [03 - SQLlab and virtual table](./doc/03_sqllab_virtual_table.md)
+* [04 - Row level security](./doc/04_row_level_security.md)
+* [05 - Table chart with time filter](./doc/05_table_chart_time_filter.md)
 
 ## Important
 
