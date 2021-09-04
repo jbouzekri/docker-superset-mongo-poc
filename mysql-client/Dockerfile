@@ -14,6 +14,6 @@ RUN wget https://github.com/mongodb/mongosql-auth-c/releases/download/v1.3.0/mon
   && rm -rf mongosql-auth-linux-x86_64-ubuntu-1604 \
   && rm mongosql-auth-linux-x86_64-ubuntu-1604-v1.3.0.tgz
 
-RUN wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu5.6_amd64.deb \
-  && dpkg -i libssl1.0.0_1.0.2n-1ubuntu5.6_amd64.deb \
-  && rm libssl1.0.0_1.0.2n-1ubuntu5.6_amd64.deb
+RUN wget http://old-releases.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb \
+  && dpkg -i libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb \
+  && rm libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb
