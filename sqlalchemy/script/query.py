@@ -11,7 +11,6 @@ mongobi_db = os.getenv('MONGO_BI_DATABASE')
 mongobi_uri = "mongobi://{}:{}@{}:{}/{}".format(mongobi_username, mongobi_password, mongobi_host, mongobi_port, mongobi_db)
 
 engine = sqlalchemy.create_engine(
-    #"mongobi://root?source=admin:root@poc_ssm_mongo_bi:3307/samples",
     mongobi_uri,
     connect_args={
         "ssl": {

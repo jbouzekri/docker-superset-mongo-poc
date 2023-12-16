@@ -52,13 +52,14 @@ services:
             context: ./mongo-data
         restart: on-failure
         environment:
-            MONGO_DB_URI: mongodb://root:root@poc_ssm_mongo:27017/samples?authSource=admin
+            MONGO_DB_URI: mongodb://root:root@poc_ssm_mongo:27017/reckoning?authSource=admin
         depends_on:
             - poc_ssm_mongo
             - poc_ssm_mongo_express # added to wait longer and be sure mongo is started
 
     poc_ssm_mysql_client:
         image: poc-ssm-mysql-client
+        platform: linux/amd64
         container_name: poc_ssm_mysql_client
         build:
             context: ./mysql-client
@@ -76,7 +77,7 @@ services:
             MONGO_BI_USERNAME: root?source=admin
             MONGO_BI_PASSWORD: root
             MONGO_BI_PORT: 3307
-            MONGO_BI_DATABASE: samples
+            MONGO_BI_DATABASE: reckoning
         entrypoint: ['/bin/sh', '-c', 'sleep 100000']
         volumes:
             - ./sqlalchemy/script:/sqlalchemy

@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y \
   zip \
   && rm -rf /var/lib/apt/lists/*
 
-COPY entrypoint.sh /
+COPY entrypoint.sh / \
+      master_df.json /
 
 ENTRYPOINT ["/entrypoint.sh"]
