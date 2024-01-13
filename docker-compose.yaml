@@ -1,27 +1,6 @@
 version: '3.1'
 
 services:
-    poc_ssm_mongo:
-        image: mongo:5.0.1
-        container_name: poc_ssm_mongo
-        restart: always
-        environment:
-            MONGO_INITDB_ROOT_USERNAME: root
-            MONGO_INITDB_ROOT_PASSWORD: root
-
-    poc_ssm_mongo_express:
-        image: mongo-express:1.0.0-alpha.4
-        container_name: poc_ssm_mongo_express
-        restart: always
-        ports:
-            - 8081:8081
-        environment:
-            ME_CONFIG_MONGODB_SERVER: poc_ssm_mongo
-            ME_CONFIG_MONGODB_ADMINUSERNAME: root
-            ME_CONFIG_MONGODB_ADMINPASSWORD: root
-        depends_on:
-            - poc_ssm_mongo
-
     poc_ssm_mongo_bi:
         image: poc-ssm-mongo-bi
         container_name: poc_ssm_mongo_bi
@@ -41,21 +20,6 @@ services:
             CONFIG_MONGO_BI_SSL_PEM_KEY_FILE: /ssl/mongobi.pem
         volumes:
             - ./mongo-bi/ssl:/ssl
-        depends_on:
-            - poc_ssm_mongo
-            - poc_ssm_mongo_express # added to wait longer and be sure mongo is started
-
-    poc_ssm_mongo_data:
-        image: poc-ssm-mongo-data
-        container_name: poc_ssm_mongo_data
-        build:
-            context: ./mongo-data
-        restart: on-failure
-        environment:
-            MONGO_DB_URI: mongodb://root:root@poc_ssm_mongo:27017/reckoning?authSource=admin
-        depends_on:
-            - poc_ssm_mongo
-            - poc_ssm_mongo_express # added to wait longer and be sure mongo is started
 
     poc_ssm_mysql_client:
         image: poc-ssm-mysql-client
@@ -64,8 +28,6 @@ services:
         build:
             context: ./mysql-client
         entrypoint: ['/bin/sh', '-c', 'sleep 100000']
-        depends_on:
-            - poc_ssm_mongo_data
 
     poc_ssm_sqlalchemy:
         image: poc-ssm-sqlalchemy
@@ -81,8 +43,6 @@ services:
         entrypoint: ['/bin/sh', '-c', 'sleep 100000']
         volumes:
             - ./sqlalchemy/script:/sqlalchemy
-        depends_on:
-            - poc_ssm_mongo_data
 
     poc_ssm_superset:
         image: poc-ssm-superset
@@ -96,5 +56,3 @@ services:
             ADMIN_PASSWORD: admin
         ports:
             - 8088:8088
-        depends_on:
-            - poc_ssm_mongo_data
