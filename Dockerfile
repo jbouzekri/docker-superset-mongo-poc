@@ -23,7 +23,7 @@ RUN chmod +x /entry-point.sh
 USER superset
 
 # Install pymongo driver
-RUN pip install --user
+RUN pip install --user --requirement requirements.txt
 
 # Set the entry-point script
 ENTRYPOINT ["/entry-point.sh"]
