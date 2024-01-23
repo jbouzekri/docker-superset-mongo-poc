@@ -17,6 +17,7 @@ RUN chmod 644 /usr/local/share/ca-certificates/aws-cert.pem && \
 
 # Copy the entry-point script and set permissions
 COPY entry-point.sh /entry-point.sh
+COPY requirements.txt /requirements.txt
 RUN chmod +x /entry-point.sh
 
 # Swtich back to superset user
