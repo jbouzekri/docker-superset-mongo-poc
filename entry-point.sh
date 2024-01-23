@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Wait for Superset to be ready
-sleep 10
+sleep 30
 
 echo "Creating the admin user..."
 superset fab create-admin \
@@ -9,7 +9,7 @@ superset fab create-admin \
          --firstname Ben \
          --lastname Eberle \
          --email eberlebe@umich.edu \
-         --password testpwd || { echo "Failed to create admin user"; exit 1; }
+         --password test || { echo "Failed to create admin user"; exit 1; }
 
 echo "Upgrading the database..."
 superset db upgrade || { echo "Database upgrade failed"; exit 1; }
