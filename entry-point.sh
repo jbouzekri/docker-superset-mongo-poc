@@ -18,4 +18,4 @@ echo "Initializing Superset..."
 superset init || { echo "Superset initialization failed"; exit 1; }
 
 echo "Starting the Superset server..."
-superset run -p 8088 --with-threads --reload --debugger
+superset run -p 8080 --with-threads --reload
