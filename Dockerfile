@@ -7,7 +7,7 @@ USER root
 # Update apt-get and install wget
 RUN apt-get update && \
     apt-get install -y wget \
-    apt-get install -y vim
+    apt install -y vim
 
 # Install pymongo driver
 RUN pip install pymongo
