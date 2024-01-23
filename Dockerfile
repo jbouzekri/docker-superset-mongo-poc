@@ -1,6 +1,9 @@
 # Use the official Superset image
 FROM apache/superset
 
+# Install dependencies for PyMongo
+USER root
+
 # Update apt-get and install wget
 RUN apt-get update && \
     apt-get install -y wget
@@ -16,8 +19,11 @@ RUN chmod 644 /usr/local/share/ca-certificates/aws-cert.pem && \
 COPY entry-point.sh /entry-point.sh
 RUN chmod +x /entry-point.sh
 
+# Swtich back to superset user
+USER superset
+
 # Install pymongo driver
-RUN pip install --user --requirement requirement.txt
+RUN pip install --user
 
 # Set the entry-point script
 ENTRYPOINT ["/entry-point.sh"]
