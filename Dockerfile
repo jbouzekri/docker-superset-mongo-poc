@@ -8,6 +8,9 @@ USER root
 RUN apt-get update && \
     apt-get install -y wget
 
+# Install pymongo driver
+RUN pip install pymongo
+
 # Download the PEM file
 RUN wget -O /usr/local/share/ca-certificates/aws-cert.pem "https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem"
 
@@ -17,14 +20,10 @@ RUN chmod 644 /usr/local/share/ca-certificates/aws-cert.pem && \
 
 # Copy the entry-point script and set permissions
 COPY entry-point.sh /entry-point.sh
-COPY requirements.txt /requirements.txt
 RUN chmod +x /entry-point.sh
 
 # Swtich back to superset user
 USER superset
-
-# Install pymongo driver
-RUN pip install --requirement requirements.txt
 
 # Set the entry-point script
 ENTRYPOINT ["/entry-point.sh"]
