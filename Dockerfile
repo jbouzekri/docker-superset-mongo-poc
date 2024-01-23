@@ -3,6 +3,12 @@ FROM apache/superset
 
 # Install dependencies for PyMongo
 USER root
+
+# Update apt-get and install wget
+RUN apt-get update && \
+    apt-get install -y wget
+
+# Install pymongo driver
 RUN pip install pymongo
 
 # Download the PEM file

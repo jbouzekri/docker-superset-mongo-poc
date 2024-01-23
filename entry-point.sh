@@ -1,25 +1,21 @@
 #!/bin/bash
 
-# Wait for the Superset service to start
+# Wait for Superset to be ready
 sleep 10
 
-# configure admin user
-sudo docker exec -it superset superset fab create-admin \
-              --username reckoning_admin \
-              --firstname Ben \
-              --lastname Eberle \
-              --email eberlebe@umich.edu \
-              --password ${SUPERSET_PWD}
+echo "Creating the admin user..."
+superset fab create-admin \
+         --username reckoning_admin \
+         --firstname Ben \
+         --lastname Eberle \
+         --email eberlebe@umich.edu \
+         --password testpwd || { echo "Failed to create admin user"; exit 1; }
 
-# Initialize the database
-sudo superset db upgrade
+echo "Upgrading the database..."
+superset db upgrade || { echo "Database upgrade failed"; exit 1; }
 
-# Create default roles and permissions
-sudo superset init
+echo "Initializing Superset..."
+superset init || { echo "Superset initialization failed"; exit 1; }
 
-# Start the Superset server
-sudo docker run -d -p 8080:8088 \
-             -e "SUPERSET_SECRET_KEY=$(openssl rand -base64 42)" \
-             -e "TALISMAN_ENABLED=False" \
-             --name superset apache/superset \
-             --with-threads --reload --debugger
+echo "Starting the Superset server..."
+superset run -p 8080 --with-threads --reload --debugger
