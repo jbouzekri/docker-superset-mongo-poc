@@ -10,7 +10,7 @@ services:
     volumes:
       - superset_home:/app/superset_home
     command: 
-      - superset-init.sh
+      - ./superset-init.sh
 
 volumes:
   superset_home:
