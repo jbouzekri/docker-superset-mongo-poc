@@ -1,7 +1,6 @@
 version: '3.8'
 services:
   superset:
-    platform: linux/x86_64/v8
     build: .
     container_name: superset
     ports:
