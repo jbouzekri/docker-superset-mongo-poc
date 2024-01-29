@@ -1,14 +1,17 @@
-version: '3'
-
+version: '3.8'
 services:
   superset:
-      build:
-        context: ./superset
-        dockerfile: Dockerfile
-      container_name: superset
-      environment:
-        - ADMIN_USERNAME=admin
-        - ADMIN_EMAIL=admin@superset.com
-        - ADMIN_PASSWORD=admin
-      ports:
-        - '8080:8088'
+    platform: linux/x86_64/v8
+    build: .
+    container_name: superset
+    ports:
+      - "8080:8080"
+    environment:
+      - SUPERSET_LOAD_EXAMPLES=yes
+    volumes:
+      - superset_home:/app/superset_home
+    command: 
+      - superset-init.sh
+
+volumes:
+  superset_home:
