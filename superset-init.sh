@@ -10,4 +10,4 @@ superset fab create-admin
 superset init
 
 # To start a development web server, use the -p option to bind to another port
-superset run -p 8080 --with-threads --reload --debugger
+superset run -p 8088 --with-threads --reload --debugger
