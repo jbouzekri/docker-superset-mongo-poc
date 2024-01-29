@@ -1,10 +1,15 @@
 #!/bin/bash
 
+# Create an admin user (you will be prompted to set a username, first and last name before setting a password)
+superset fab create-admin \
+              --username admin \
+              --firstname Ben \
+              --lastname Eberle \
+              --email eberlebe@umich.edu \
+              --password test
+
 # Initialize the database
 superset db upgrade
-
-# Create an admin user (you will be prompted to set a username, first and last name before setting a password)
-superset fab create-admin
 
 # Create default roles and permissions
 superset init
