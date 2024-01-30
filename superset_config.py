@@ -5,10 +5,7 @@ import secrets
 # ---------------------------------------------------------
 ROW_LIMIT = 5000
 
-SUPERSET_WORKERS = 4 
-
-SERVER_HOST = '0.0.0.0'
-SUPERSET_WEBSERVER_PORT = 8080
+SUPERSET_WORKERS = 4
 
 SECRET_KEY = secrets.token_urlsafe(16)
 
