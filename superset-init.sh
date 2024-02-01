@@ -17,5 +17,5 @@ superset fab create-admin \
 # Create default roles and permissions
 superset init
 
-# To start a development web server, use the -p option to bind to another port
+# To start a development web server, use the -h option to bind to host and -p option to bind to port
 superset run -h 0.0.0.0 -p 8088 --with-threads --reload --debugger
