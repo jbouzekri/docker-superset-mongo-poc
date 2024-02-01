@@ -20,6 +20,6 @@ SESSION_COOKIE_SAMESITE = None  # One of [None, 'Lax', 'Strict']
 WTF_CSRF_ENABLED = False
 
 # Branding
-LOGO_TARGET_PATH = 'app/logo/TheReckoningProject_logo.png'
+LOGO_TARGET_PATH = "TheReckoningProject_logo.png"
 APP_NAME = "The Reckoing Project"
 WELCOME_MESSAGE = "Welcome!"
