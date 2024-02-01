@@ -14,3 +14,5 @@ WTF_CSRF_ENABLED = True
 
 # Branding
 LOGO_TARGET_PATH = 'app/logo/TheReckoningProject_logo.png'
+APP_NAME = "The Reckoing Project"
+WELCOME_MESSAGE = "Welcome!"
